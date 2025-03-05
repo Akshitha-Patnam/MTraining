@@ -34,8 +34,8 @@ class Order {
 
     @Override
     public String toString() {
-        return "Order [id=" + id + ", name=" + name + ", price=" + price + ", month=" + month + ", year=" + year
-                + ", city=" + city + ", category=" + category + ", quantity=" + quantity + "]";
+        return "Order id=" + id + ", name=" + name + ", price=" + price + ", month=" + month + ", year=" + year
+                + ", city=" + city + ", category=" + category + ", quantity=" + quantity ;
     }
 }
 
@@ -58,7 +58,8 @@ public class Ques {
                 .collect(Collectors.groupingBy(Order::getCategory));
 
         System.out.println("\nCategory-wise Orders:");
-        categoryWiseOrders.forEach((category, orders) -> {
+        //forEach(key, value)
+        categoryWiseOrders.forEach((category, orders)-> {
             System.out.println("Category: " + category);
             orders.forEach(System.out::println);
         });
@@ -66,10 +67,11 @@ public class Ques {
 
     // 3. Print max price order
     public static void getMaxPrice(List<Order> data) {
-        int maxPrice = data.stream()
-                .mapToInt(Order::getPrice)
-                .max()
-                .orElse(0);
+        Optional<Order> maxPrice = data.stream()
+        		.sorted(Comparator.comparing(Order :: getPrice).reversed())
+				.findFirst();
+                //.mapToInt(Order::getPrice)
+                //.max();
         System.out.println("\nMaximum Order Price: " + maxPrice);
     }
 
@@ -87,10 +89,11 @@ public class Ques {
 
     // 5. Find out min order price in total orders
     public static void getMinOrderPrice(List<Order> data) {
-        int minPrice = data.stream()
-                .mapToInt(Order::getPrice)
-                .min()
-                .orElse(0);
+        Optional<Order> minPrice = data.stream()
+        		.sorted(Comparator.comparing(Order :: getPrice))
+				.findFirst();
+               // .mapToInt(Order::getPrice)
+               // .min();
         System.out.println("\nMinimum Order Price: " + minPrice);
     }
 
@@ -100,7 +103,7 @@ public class Ques {
                 .sorted(Comparator.comparing(Order::getId))
                 .findFirst();
 
-        firstOrder.ifPresent(order -> System.out.println("\nFirst Order: " + order));
+        System.out.println("\nFirst Order: " + firstOrder);
     }
 
     public static void main(String[] args) {
